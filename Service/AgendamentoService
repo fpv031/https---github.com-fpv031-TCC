@@ -1,0 +1,60 @@
+package com.domesticas.service;
+
+import com.domesticas.dto.AgendamentoDTO;
+import com.domesticas.model.Agendamento;
+import com.domesticas.repository.AgendamentoRepository;
+import com.domesticas.repository.EmpregadaRepository;
+import com.domesticas.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class AgendamentoService {
+
+    @Autowired
+    private AgendamentoRepository repository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EmpregadaRepository empregadaRepository;
+
+    public AgendamentoDTO criarAgendamento(AgendamentoDTO dto) {
+        Agendamento agendamento = dto.toEntity(
+                usuarioRepository.findById(dto.getIdUsuario()).orElseThrow(),
+                empregadaRepository.findById(dto.getIdEmpregada()).orElseThrow()
+        );
+        agendamento.setStatus("PENDENTE");
+        return AgendamentoDTO.fromEntity(repository.save(agendamento));
+    }
+
+    public List<AgendamentoDTO> listarPorUsuario(Long usuarioId) {
+        return repository.findByUsuarioId(usuarioId)
+                .stream()
+                .map(AgendamentoDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<AgendamentoDTO> listarPorEmpregada(Long empregadaId) {
+        return repository.findByEmpregadaId(empregadaId)
+                .stream()
+                .map(AgendamentoDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public AgendamentoDTO confirmar(Long id) {
+        Agendamento agendamento = repository.findById(id).orElseThrow();
+        agendamento.setStatus("CONFIRMADO");
+        return AgendamentoDTO.fromEntity(repository.save(agendamento));
+    }
+
+    public AgendamentoDTO concluir(Long id) {
+        Agendamento agendamento = repository.findById(id).orElseThrow();
+        agendamento.setStatus("CONCLUIDO");
+        return AgendamentoDTO.fromEntity(repository.save(agendamento));
+    }
+}

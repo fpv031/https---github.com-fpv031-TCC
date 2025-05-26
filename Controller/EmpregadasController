@@ -1,0 +1,34 @@
+package com.domesticas.controller;
+
+import com.domesticas.dto.EmpregadaDTO;
+import com.domesticas.service.EmpregadaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/empregadas")
+public class EmpregadaController {
+
+    @Autowired
+    private EmpregadaService empregadaService;
+
+    @PostMapping
+    public EmpregadaDTO cadastrarEmpregada(@RequestBody EmpregadaDTO dto) {
+        return empregadaService.cadastrar(dto);
+    }
+
+    @GetMapping
+    public List<EmpregadaDTO> listarTodas() {
+        return empregadaService.listarTodas();
+    }
+
+    @GetMapping("/proximas")
+    public List<EmpregadaDTO> buscarEmpregadasProximas(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam(defaultValue = "20") double raioKm) {
+        return empregadaService.buscarPorProximidade(latitude, longitude, raioKm);
+    }
+}

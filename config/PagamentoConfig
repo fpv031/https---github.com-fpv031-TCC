@@ -1,0 +1,14 @@
+package com.domesticas.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class PagamentoConfig {
+
+    @Bean
+    public RestTemplate pagamentoRestTemplate() {
+        return new RestTemplate(); // Pode ser configurado com headers personalizados etc.
+    }
+}

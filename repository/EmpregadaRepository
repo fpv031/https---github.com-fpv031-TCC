@@ -1,0 +1,10 @@
+package com.domesticas.repository;
+
+import com.domesticas.model.Empregada;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EmpregadaRepository extends JpaRepository<Empregada, Long> {
+    // Métodos personalizados podem ser adicionados aqui, se necessário
+}

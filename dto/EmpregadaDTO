@@ -1,0 +1,43 @@
+package com.domesticas.dto;
+
+import com.domesticas.model.Empregada;
+import lombok.Data;
+
+@Data
+public class EmpregadaDTO {
+
+    private Long id;
+    private String nome;
+    private String telefone;
+    private String email;
+    private String endereco;
+    private double latitude;
+    private double longitude;
+    private String especialidade;
+
+    public static EmpregadaDTO fromEntity(Empregada e) {
+        EmpregadaDTO dto = new EmpregadaDTO();
+        dto.setId(e.getId());
+        dto.setNome(e.getNome());
+        dto.setTelefone(e.getTelefone());
+        dto.setEmail(e.getEmail());
+        dto.setEndereco(e.getEndereco());
+        dto.setLatitude(e.getLatitude());
+        dto.setLongitude(e.getLongitude());
+        dto.setEspecialidade(e.getEspecialidade());
+        return dto;
+    }
+
+    public Empregada toEntity() {
+        Empregada e = new Empregada();
+        e.setId(this.id);
+        e.setNome(this.nome);
+        e.setTelefone(this.telefone);
+        e.setEmail(this.email);
+        e.setEndereco(this.endereco);
+        e.setLatitude(this.latitude);
+        e.setLongitude(this.longitude);
+        e.setEspecialidade(this.especialidade);
+        return e;
+    }
+}

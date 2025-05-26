@@ -1,0 +1,44 @@
+package com.domesticas.dto;
+
+import com.domesticas.model.Agendamento;
+import com.domesticas.model.Empregada;
+import com.domesticas.model.Usuario;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+public class AgendamentoDTO {
+
+    private Long id;
+    private Long idUsuario;
+    private Long idEmpregada;
+    private LocalDateTime dataHora;
+    private String status;
+    private String observacoes;
+    private double valor;
+
+    public static AgendamentoDTO fromEntity(Agendamento a) {
+        AgendamentoDTO dto = new AgendamentoDTO();
+        dto.setId(a.getId());
+        dto.setIdUsuario(a.getUsuario().getId());
+        dto.setIdEmpregada(a.getEmpregada().getId());
+        dto.setDataHora(a.getDataHora());
+        dto.setStatus(a.getStatus());
+        dto.setObservacoes(a.getObservacoes());
+        dto.setValor(a.getValor());
+        return dto;
+    }
+
+    public Agendamento toEntity(Usuario usuario, Empregada empregada) {
+        Agendamento a = new Agendamento();
+        a.setId(this.id);
+        a.setUsuario(usuario);
+        a.setEmpregada(empregada);
+        a.setDataHora(this.dataHora);
+        a.setStatus(this.status);
+        a.setObservacoes(this.observacoes);
+        a.setValor(this.valor);
+        return a;
+    }
+}

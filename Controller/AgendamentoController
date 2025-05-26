@@ -1,0 +1,41 @@
+package com.domesticas.controller;
+
+import com.domesticas.dto.AgendamentoDTO;
+import com.domesticas.service.AgendamentoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/agendamentos")
+public class AgendamentoController {
+
+    @Autowired
+    private AgendamentoService agendamentoService;
+
+    @PostMapping
+    public AgendamentoDTO agendar(@RequestBody AgendamentoDTO dto) {
+        return agendamentoService.criarAgendamento(dto);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public List<AgendamentoDTO> listarPorUsuario(@PathVariable Long usuarioId) {
+        return agendamentoService.listarPorUsuario(usuarioId);
+    }
+
+    @GetMapping("/empregada/{empregadaId}")
+    public List<AgendamentoDTO> listarPorEmpregada(@PathVariable Long empregadaId) {
+        return agendamentoService.listarPorEmpregada(empregadaId);
+    }
+
+    @PutMapping("/{id}/confirmar")
+    public AgendamentoDTO confirmarAgendamento(@PathVariable Long id) {
+        return agendamentoService.confirmar(id);
+    }
+
+    @PutMapping("/{id}/concluir")
+    public AgendamentoDTO concluirAgendamento(@PathVariable Long id) {
+        return agendamentoService.concluir(id);
+    }
+}

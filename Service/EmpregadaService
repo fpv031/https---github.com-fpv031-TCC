@@ -1,0 +1,43 @@
+package com.domesticas.service;
+
+import com.domesticas.dto.EmpregadaDTO;
+import com.domesticas.model.Empregada;
+import com.domesticas.repository.EmpregadaRepository;
+import com.domesticas.util.GeoUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class EmpregadaService {
+
+    @Autowired
+    private EmpregadaRepository repository;
+
+    public EmpregadaDTO cadastrar(EmpregadaDTO dto) {
+        Empregada empregada = dto.toEntity();
+        return EmpregadaDTO.fromEntity(repository.save(empregada));
+    }
+
+    public List<EmpregadaDTO> listarTodas() {
+        return repository.findAll()
+                .stream()
+                .map(EmpregadaDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<EmpregadaDTO> buscarPorProximidade(double latitude, double longitude, double raioKm) {
+        return repository.findAll()
+                .stream()
+                .filter(e -> GeoUtil.calcularDistancia(latitude, longitude, e.getLatitude(), e.getLongitude()) <= raioKm)
+                .sorted((e1, e2) -> {
+                    double d1 = GeoUtil.calcularDistancia(latitude, longitude, e1.getLatitude(), e1.getLongitude());
+                    double d2 = GeoUtil.calcularDistancia(latitude, longitude, e2.getLatitude(), e2.getLongitude());
+                    return Double.compare(d1, d2);
+                })
+                .map(EmpregadaDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+}

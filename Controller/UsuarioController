@@ -1,0 +1,24 @@
+package com.domesticas.controller;
+
+import com.domesticas.dto.UsuarioDTO;
+import com.domesticas.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @PostMapping
+    public UsuarioDTO cadastrarUsuario(@RequestBody UsuarioDTO dto) {
+        return usuarioService.cadastrar(dto);
+    }
+
+    @GetMapping("/{id}")
+    public UsuarioDTO buscarUsuario(@PathVariable Long id) {
+        return usuarioService.buscarPorId(id);
+    }
+}

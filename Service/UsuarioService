@@ -1,0 +1,25 @@
+package com.domesticas.service;
+
+import com.domesticas.dto.UsuarioDTO;
+import com.domesticas.model.Usuario;
+import com.domesticas.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UsuarioService {
+
+    @Autowired
+    private UsuarioRepository repository;
+
+    public UsuarioDTO cadastrar(UsuarioDTO dto) {
+        Usuario usuario = dto.toEntity();
+        return UsuarioDTO.fromEntity(repository.save(usuario));
+    }
+
+    public UsuarioDTO buscarPorId(Long id) {
+        return repository.findById(id)
+                .map(UsuarioDTO::fromEntity)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+}

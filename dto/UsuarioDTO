@@ -1,0 +1,40 @@
+package com.domesticas.dto;
+
+import com.domesticas.model.Usuario;
+import lombok.Data;
+
+@Data
+public class UsuarioDTO {
+
+    private Long id;
+    private String nome;
+    private String telefone;
+    private String email;
+    private String endereco;
+    private double latitude;
+    private double longitude;
+
+    public static UsuarioDTO fromEntity(Usuario u) {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(u.getId());
+        dto.setNome(u.getNome());
+        dto.setTelefone(u.getTelefone());
+        dto.setEmail(u.getEmail());
+        dto.setEndereco(u.getEndereco());
+        dto.setLatitude(u.getLatitude());
+        dto.setLongitude(u.getLongitude());
+        return dto;
+    }
+
+    public Usuario toEntity() {
+        Usuario u = new Usuario();
+        u.setId(this.id);
+        u.setNome(this.nome);
+        u.setTelefone(this.telefone);
+        u.setEmail(this.email);
+        u.setEndereco(this.endereco);
+        u.setLatitude(this.latitude);
+        u.setLongitude(this.longitude);
+        return u;
+    }
+}
